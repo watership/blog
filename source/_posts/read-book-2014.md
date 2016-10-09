@@ -1,7 +1,7 @@
 ---
 title: 2014年阅读书目 
 date: 2014-12-14 09:23:22
-categories: 生活随笔
+categories: 年度总结
 tags:
 toc: true
 ---

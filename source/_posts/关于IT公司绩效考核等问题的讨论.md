@@ -1,7 +1,6 @@
 ---
 title: 关于IT公司绩效考核等问题的讨论
 categories: 技术
-toc: true
 date: 2016-04-07 02:30:32
 tags:
 ---
