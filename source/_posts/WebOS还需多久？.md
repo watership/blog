@@ -1,8 +1,9 @@
 ---
 title: WebOS还需多久？
 date: 2012-06-12 21:44:24
-categories:
+categories: 生活随笔
 tags:
+toc: true
 ---
 
 2009年CES大展上曾今轰动世人，曾经惊艳无比的WebOS，随着惠普开源计划 Open WebOS陨落。

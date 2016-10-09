@@ -1,8 +1,9 @@
 ---
 title: Imaginaerum继续夜愿
 date: 2012-04-20 21:45:35
-categories:
+categories: 生活随笔
 tags:
+toc: true
 ---
 
 “流行乐中的精华是摇滚乐，摇滚乐中的精华是金属乐。”

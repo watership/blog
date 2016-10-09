@@ -1,8 +1,9 @@
 ---
 title: 未来是属于Amazon的
 date: 2012-03-29 21:48:28
-categories:
+categories: 生活随笔
 tags:
+toc: true
 ---
 
 前段时间我一直在考虑是否应该要买一个平板电脑，考虑了很长时间，看过了很多的品牌和设备，最终我在“慎重”考虑后选择了超薄版的Kindle（俗称Kindle 4）。

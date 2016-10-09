@@ -1,8 +1,9 @@
 ---
 title: 北漂两周年之人物志
 date: 2014-07-10 23:55:00
-categories:
+categories: 生活随笔
 tags:
+toc: true
 ---
 
 ### 阿成同学

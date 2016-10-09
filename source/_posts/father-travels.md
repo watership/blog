@@ -1,8 +1,9 @@
 ---
 title: 父亲游记
 date: 2014-09-13 23:36:00
-categories:
+categories: 生活随笔
 tags:
+toc: true
 ---
 
 

@@ -6,7 +6,7 @@
 title: "ZhouTAO's Blog"
 subtitle: "write every day"
 description: 闲言碎语
-author: ZhouTao
+author: zhoutao
 language: zh-CN
 timezone:
 
@@ -63,7 +63,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: aloha
+theme: wixo
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
