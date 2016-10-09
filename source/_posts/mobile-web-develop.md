@@ -4,7 +4,6 @@ date: 2015-09-09 20:44:47
 tags:
 ---
 
-# Mobile Web常见技术问题和规划
 
 前一段时间应Boss要求，给开发组同事做了一次关于前端技术的演讲，我整理了现在项目遇到的很多问题，和未来规划。我还特意去了一趟上海，求教朋友一些前端架构问题，他说我遇到的问题具有很广泛的普遍性，很多团队都有遇到，于是我抽空整理出来。
 
@@ -80,10 +79,9 @@ CMD or AMD，计划引入seajs模块加载器；
 	![book](/images/mobile_web_dev_book1.jpg)
 
 ### 四、前端工作流改进
-1. 多设备多浏览器自动同步刷新工具
+1. 多设备多浏览器自动同步刷新工具[Browsersync](http://www.browsersync.cn/)
 
-[Browsersync](http://www.browsersync.cn/)
-![server](/images/mobile_web_dev_server.jpg)
+![server](/images/mobile_web_dev_server.gif)
 
 2. 前端代码上线前自动化处理
 	  * JS和CSS代码的压缩；
@@ -91,7 +89,7 @@ CMD or AMD，计划引入seajs模块加载器；
 	  * 将页面引入大量js和css文件合并成一个或多个文件（待解决）：减少http请求；
 	  * 目前打算使用gulp工具实现发布前的文件处理的环节；
 
-![gulp](/images/gulp_logo.jpg)
+![gulp](/images/gulp_logo.png)
 
 ### 五、项目前端架构调整（长期规划）
 #### SPA（Single-page application）
@@ -111,7 +109,7 @@ CMD or AMD，计划引入seajs模块加载器；
 
 #### MVC：
 计划采用Backbone.js
-![backbone_logo](/images/backbone_logo.jpg)
+![backbone_logo](/images/backbone_logo.png)
 
 
 ### 资料：
