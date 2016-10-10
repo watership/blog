@@ -1,13 +1,311 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>火狐扩展开发：获得最近访问的列表 | zhoutao</title>
+  <meta name="author" content="zhoutao">
+  
+  <meta name="description" content="闲言碎语">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="火狐扩展开发：获得最近访问的列表"/>
+  <meta property="og:site_name" content="zhoutao"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="zhoutao" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
 <body id="body" data-spy="scroll" data-target=".toc">
   <div class="container" id="container">
 	<div class="content">
-	  <%- body %>
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">zhoutao</a><span class="split"></span><span class="title">火狐扩展开发：获得最近访问的列表</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2014-06-09</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <pre><code>function getHistoryByTime(days) {
+    var historySvc = Components.classes[&quot;@mozilla.org/browser/nav-history-service;1&quot;].getService(Components.interfaces.nsINavHistoryService);
+    if (days == null || days == undefined) {
+        days = 7;
+    }
+    var list = new Array();
+    var query = historySvc.getNewQuery();
+    query.searchTerms = &quot;firefox&quot;;
+    var query2 = historySvc.getNewQuery();
+    query2.beginTimeReference = query2.TIME_RELATIVE_NOW;
+    query2.beginTime = -24 * parseInt(days) * 60 * 60 * 1000000;
+    query2.endTimeReference = query2.TIME_RELATIVE_NOW;
+    query2.endTime = 0;
+    var options = historySvc.getNewQueryOptions();
+    options.sortingMode = historySvc.SORT_BY_VISITCOUNT_DESCENDING;
+    options.queryType = historySvc.QUERY_TYPE_HISTORY;
+    options.maxResults = 10;
+    options.resultType = historySvc.RESULTS_AS_VISIT;
+    var result = historySvc.executeQueries([query, query2], 2, options);
+    var cont = result.root;
+    cont.containerOpen = true;
+    for (var i = 0; i &lt; cont.childCount; i++) {
+        var node = cont.getChild(i);
+        if (node != null &amp;&amp; node != undefined) {
+            if (node.uri &amp;&amp; !node.uri.indexOf(&quot;file&quot;) == 0) {
+                var entry = {
+                    title: node.title == null ? node.uri : node.title,
+                    pic: &quot;&quot;,
+                    icon: node.icon,
+                    url: node.uri
+                };
+                list.push(entry);
+            }
+        }
+    }
+    cont.containerOpen = false;
+    return list;
+}
+</code></pre>	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2014/12/10/doT模板简介/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2014/05/30/火狐扩展开发：普通Web页面和浏览器扩展互相通信/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
 	</div>
   </div>
   <div class="container-narrow">
-	<footer> <%- partial('_partial/footer') %> </footer>
+	<footer> <p>
+  &copy; 2016 zhoutao
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
   </div> <!-- container-narrow -->
-  <%- partial('_partial/after_footer') %>
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
 </body>
 </html>

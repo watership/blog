@@ -1,13 +1,314 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>火狐扩展开发：普通Web页面和浏览器扩展互相通信 | zhoutao</title>
+  <meta name="author" content="zhoutao">
+  
+  <meta name="description" content="闲言碎语">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="火狐扩展开发：普通Web页面和浏览器扩展互相通信"/>
+  <meta property="og:site_name" content="zhoutao"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="zhoutao" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
 <body id="body" data-spy="scroll" data-target=".toc">
   <div class="container" id="container">
 	<div class="content">
-	  <%- body %>
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">zhoutao</a><span class="split"></span><span class="title">火狐扩展开发：普通Web页面和浏览器扩展互相通信</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2014-05-30</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <p>前篇博客介绍 <a href="http://tonychow.iteye.com/admin/blogs/2070222" target="_blank" rel="external">浏览器扩展在第三方页面引入JS脚本</a>的方法，但是插入在第三方页面里面的JS代码是无法调用浏览器扩展的API（如：<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface" target="_blank" rel="external">XPCOM Interface Reference</a>），这样这些插入到第三方页面的代码就没办法和浏览器扩展进行通信，没办法交换数据，我们完全控制不了它们了。</p>
+<p>对于这个问题Mozilla提供了一个方法：用DOM元素的属性来交互数据，这个方法非常妙；浏览器扩展可以获得第三方页面中任何DOM元素的属性，而这个页面的JS代码（就是我们插入的远程JS代码）显然也可以。<br>（官方文档地址：<a href="https://developer.mozilla.org/en-US/Add-ons/Code_snippets/Interaction_between_privileged_and_non-privileged_pages" target="_blank" rel="external">Interaction between privileged and non-privileged pages</a>）</p>
+<p>官方的文档写的比较罗嗦（<a href="https://developer.mozilla.org/zh-CN/docs/Code_snippets/Interaction_between_privileged_and_non-privileged_pages" target="_blank" rel="external">我试着翻译了一半没完成</a>），而我自己开发扩展只需要用到少量而且简单的数据的交换，所以我写一个转述。</p>
+<h2 id="页面向浏览器扩展发送数据"><a href="#页面向浏览器扩展发送数据" class="headerlink" title="页面向浏览器扩展发送数据"></a>页面向浏览器扩展发送数据</h2><h3 id="在页面HTML中创建一个DOM和自定义事件，代码如下："><a href="#在页面HTML中创建一个DOM和自定义事件，代码如下：" class="headerlink" title="在页面HTML中创建一个DOM和自定义事件，代码如下："></a>在页面HTML中创建一个DOM和自定义事件，代码如下：</h3><pre><code>var element = document.createElement(&quot;MyExtensionDataElement&quot;);
+element.setAttribute(&quot;data-count&quot;, &quot;foobar&quot;);
+document.documentElement.appendChild(element);
+
+var evt = document.createEvent(&quot;Events&quot;);
+evt.initEvent(&quot;MyExtensionEvent&quot;, true, false);
+element.dispatchEvent(evt);//触发事件
+</code></pre><h3 id="在扩展的browser-xul里面监听上面创建的自定义事件，代码如下："><a href="#在扩展的browser-xul里面监听上面创建的自定义事件，代码如下：" class="headerlink" title="在扩展的browser.xul里面监听上面创建的自定义事件，代码如下："></a>在扩展的browser.xul里面监听上面创建的自定义事件，代码如下：</h3><pre><code>var MyExtension = {
+    myListener: function(evt) {
+        var count = evt.target.getAttribute(&quot;data-adcount&quot;);//这就是取到的数据
+        //alert(count);
+    }
+}
+
+document.addEventListener(&quot;MyExtensionEvent&quot;, function(e) { myExtension.myListener(e); }, false, true);
+// 最后一个值是火狐扩展的特权值，表示允许监听到普通页面的事件。
+</code></pre><h2 id="浏览器扩展向页面发送数据"><a href="#浏览器扩展向页面发送数据" class="headerlink" title="浏览器扩展向页面发送数据"></a>浏览器扩展向页面发送数据</h2><h3 id="在浏览器扩展的browser-xul中给页面创建一个自定义事件，触发事件可以改变页面中相应DOM元素的属性值，代码如下："><a href="#在浏览器扩展的browser-xul中给页面创建一个自定义事件，触发事件可以改变页面中相应DOM元素的属性值，代码如下：" class="headerlink" title="在浏览器扩展的browser.xul中给页面创建一个自定义事件，触发事件可以改变页面中相应DOM元素的属性值，代码如下："></a>在浏览器扩展的browser.xul中给页面创建一个自定义事件，触发事件可以改变页面中相应DOM元素的属性值，代码如下：</h3><pre><code>var myExtension = {
+  myListener: function(evt) {
+    var count = evt.target.getAttribute(&quot;data-adcount&quot;);//这就是取到的数据
+    //alert(count);
+
+/* the extension answers the page*/
+    evt.target.setAttribute(&quot;attribute3&quot;, &quot;The extension&quot;);
+
+    var doc = evt.target.ownerDocument;//取得页面的文档
+
+    var AnswerEvt = doc.createElement(&quot;MyExtensionAnswer&quot;);
+    AnswerEvt.setAttribute(&quot;Part1&quot;, &quot;answers this.&quot;);
+
+    doc.documentElement.appendChild(AnswerEvt);
+
+    var event = doc.createEvent(&quot;HTMLEvents&quot;);
+    event.initEvent(&quot;MyAnswerEvent&quot;, true, false);
+    AnswerEvt.dispatchEvent(event);
+  }
+}
+
+document.addEventListener(&quot;MyExtensionEvent&quot;, function(e) { myExtension.myListener(e); }, false, true);
+</code></pre><h3 id="在页面中我们只要获取刚才设置的DOM元素的属性值就可以得到扩展内部发过来的数据了。"><a href="#在页面中我们只要获取刚才设置的DOM元素的属性值就可以得到扩展内部发过来的数据了。" class="headerlink" title="在页面中我们只要获取刚才设置的DOM元素的属性值就可以得到扩展内部发过来的数据了。"></a>在页面中我们只要获取刚才设置的DOM元素的属性值就可以得到扩展内部发过来的数据了。</h3>	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2014/06/09/火狐扩展开发：获得最近访问的列表/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2014/05/23/火狐扩展开发：在第三方页面插入JS脚本/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
 	</div>
   </div>
   <div class="container-narrow">
-	<footer> <%- partial('_partial/footer') %> </footer>
+	<footer> <p>
+  &copy; 2016 zhoutao
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
   </div> <!-- container-narrow -->
-  <%- partial('_partial/after_footer') %>
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
 </body>
 </html>

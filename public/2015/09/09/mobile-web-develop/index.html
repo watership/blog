@@ -1,13 +1,342 @@
-<%- partial('_partial/head') %>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Mobile Web常见技术问题和规划(技术分享演讲稿) | zhoutao</title>
+  <meta name="author" content="zhoutao">
+  
+  <meta name="description" content="闲言碎语">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Mobile Web常见技术问题和规划(技术分享演讲稿)"/>
+  <meta property="og:site_name" content="zhoutao"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="zhoutao" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+</head>
+
 <body id="body" data-spy="scroll" data-target=".toc">
   <div class="container" id="container">
 	<div class="content">
-	  <%- body %>
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">zhoutao</a><span class="split"></span><span class="title">Mobile Web常见技术问题和规划(技术分享演讲稿)</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2015-09-09</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <p>前一段时间应Boss要求，给开发组同事做了一次关于前端技术的演讲，我整理了现在项目遇到的很多问题，和未来规划。我还特意去了一趟上海，求教朋友一些前端架构问题，他说我遇到的问题具有很广泛的普遍性，很多团队都有遇到，于是我抽空整理出来。</p>
+<h2 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h2><h3 id="一、目前前端技术"><a href="#一、目前前端技术" class="headerlink" title="一、目前前端技术"></a>一、目前前端技术</h3><ul>
+<li><p>JS功能库：jQuery和Zepto混用；</p>
+</li>
+<li><p>页面之间传递数据方法：url传递数据；</p>
+</li>
+<li><p>本地数据存储cookie；</p>
+</li>
+<li><p>字符串拼接来渲染DOM</p>
+</li>
+</ul>
+<h3 id="二、现存在的问题"><a href="#二、现存在的问题" class="headerlink" title="二、现存在的问题"></a>二、现存在的问题</h3><ul>
+<li><p>页面js以及css文件过多过大；</p>
+</li>
+<li><p>JS库和插件引用不规范不统一；</p>
+</li>
+<li><p>HTML片段管理和渲染方法需要改进和优化；</p>
+</li>
+<li><p>没有进行JS模块化，通用方法未提出公用；</p>
+</li>
+<li><p>线上JS和CSS代码未做压缩处理；</p>
+</li>
+<li><p>没有数据缓存和更新机制；</p>
+</li>
+<li><p>静态文件images需要规划管理；</p>
+</li>
+</ul>
+<p><img src="/images/mobile_web_dev_phone.jpg" alt="mobile phone"></p>
+<h2 id="规划"><a href="#规划" class="headerlink" title="规划"></a>规划</h2><h3 id="一、统一JS使用规范和基本解决方案"><a href="#一、统一JS使用规范和基本解决方案" class="headerlink" title="一、统一JS使用规范和基本解决方案"></a>一、统一JS使用规范和基本解决方案</h3><h4 id="1-全局使用JS功能库Zepto"><a href="#1-全局使用JS功能库Zepto" class="headerlink" title="1.全局使用JS功能库Zepto"></a>1.全局使用JS功能库Zepto</h4><p>逐步将项目中每个页面的jQuery替换成Zepto，解决两者的兼容差异，和Zepto的功能缺失；</p>
+<h4 id="2-全局引入移动点击事件处理方案Fastclick"><a href="#2-全局引入移动点击事件处理方案Fastclick" class="headerlink" title="2.全局引入移动点击事件处理方案Fastclick"></a>2.全局引入移动点击事件处理方案Fastclick</h4><p>解决click在移动设备上300ms延迟和点透bug；</p>
+<h4 id="3-统一HTML渲染方法"><a href="#3-统一HTML渲染方法" class="headerlink" title="3.统一HTML渲染方法"></a>3.统一HTML渲染方法</h4><p>从原有HTML字符串拼接逐步改为使用前端模板渲染引擎doT.js；</p>
+<h4 id="4-数据缓存及更新机制"><a href="#4-数据缓存及更新机制" class="headerlink" title="4.数据缓存及更新机制"></a>4.数据缓存及更新机制</h4><p>本地数据localStorage缓存一些ajax请求的数据，更新时间等机制写成公用的JS方法；</p>
+<h4 id="5-JavaScript模块化"><a href="#5-JavaScript模块化" class="headerlink" title="5.JavaScript模块化"></a>5.JavaScript模块化</h4><p>CMD or AMD，计划引入seajs模块加载器；</p>
+<h3 id="二、布局和CSS开发"><a href="#二、布局和CSS开发" class="headerlink" title="二、布局和CSS开发"></a>二、布局和CSS开发</h3><h4 id="1-公用样式文件的维护、CSS文件目录管理规范、单个页面CSS文件引入规范"><a href="#1-公用样式文件的维护、CSS文件目录管理规范、单个页面CSS文件引入规范" class="headerlink" title="1. 公用样式文件的维护、CSS文件目录管理规范、单个页面CSS文件引入规范"></a>1. 公用样式文件的维护、CSS文件目录管理规范、单个页面CSS文件引入规范</h4><pre><code>* reset.css  (样式重置表)
+* common.css  (公用样式表)
+* page.css  (本页面样式)
+</code></pre><h4 id="2-将JS动画效果逐步使用CSS3的动画进行取代，尽可能调用CSS3硬件加速"><a href="#2-将JS动画效果逐步使用CSS3的动画进行取代，尽可能调用CSS3硬件加速" class="headerlink" title="2. 将JS动画效果逐步使用CSS3的动画进行取代，尽可能调用CSS3硬件加速"></a>2. 将JS动画效果逐步使用CSS3的动画进行取代，尽可能调用CSS3硬件加速</h4><h4 id="3-后期有待选型和研究的问题"><a href="#3-后期有待选型和研究的问题" class="headerlink" title="3. 后期有待选型和研究的问题"></a>3. 后期有待选型和研究的问题</h4><pre><code>* 布局逐步放弃float布局，还是改用flex-box？
+* REM or 百分比布局选型？
+* LESS (SASS)是否适合引入?
+</code></pre><h3 id="三、前端代码可维护性"><a href="#三、前端代码可维护性" class="headerlink" title="三、前端代码可维护性"></a>三、前端代码可维护性</h3><h4 id="1-命名规范"><a href="#1-命名规范" class="headerlink" title="1. 命名规范"></a>1. 命名规范</h4><pre><code>* 语义化命名
+* CSS命名建议使用中杠来命名：help-guest-regist
+* JS建议驼峰命名法：helpGuestRegist （方法命名尽可能的语义化和完整）
+</code></pre><h4 id="2-结构html、样式css、行为js分离"><a href="#2-结构html、样式css、行为js分离" class="headerlink" title="2. 结构html、样式css、行为js分离"></a>2. 结构html、样式css、行为js分离</h4><pre><code>* 避免HTML中写CSS样式
+* 避免HTML中写JS语句
+</code></pre><h4 id="3-JavaScript全局变量"><a href="#3-JavaScript全局变量" class="headerlink" title="3. JavaScript全局变量"></a>3. JavaScript全局变量</h4><pre><code>  * 严格限制JS中全局变量的数量，避免定义过多全局变量；
+  * 注： [代码规范参考《编写可维护的JavaScript》](http://book.douban.com/subject/21792530/)
+![book](/images/mobile_web_dev_book1.jpg)
+</code></pre><h3 id="四、前端工作流改进"><a href="#四、前端工作流改进" class="headerlink" title="四、前端工作流改进"></a>四、前端工作流改进</h3><h4 id="1-多设备多浏览器自动同步刷新工具Browsersync"><a href="#1-多设备多浏览器自动同步刷新工具Browsersync" class="headerlink" title="1.多设备多浏览器自动同步刷新工具Browsersync"></a>1.多设备多浏览器自动同步刷新工具<a href="http://www.browsersync.cn/" target="_blank" rel="external">Browsersync</a></h4><p><img src="/images/mobile_web_dev_server.gif" alt="server"></p>
+<h4 id="2-前端代码上线前自动化处理"><a href="#2-前端代码上线前自动化处理" class="headerlink" title="2.前端代码上线前自动化处理"></a>2.前端代码上线前自动化处理</h4><ul>
+<li>JS和CSS代码的压缩；</li>
+<li>给js/css/image文件版本号(文件指纹)：解决浏览器和微信强缓存问题；</li>
+<li>将页面引入大量js和css文件合并成一个或多个文件（待解决）：减少http请求；</li>
+<li>目前打算使用gulp工具实现发布前的文件处理的环节；<br><img src="/images/gulp_logo.png" alt="gulp"></li>
+</ul>
+<h2 id="项目前端架构调整（长期规划）"><a href="#项目前端架构调整（长期规划）" class="headerlink" title="项目前端架构调整（长期规划）"></a>项目前端架构调整（长期规划）</h2><h3 id="SPA（Single-page-application）"><a href="#SPA（Single-page-application）" class="headerlink" title="SPA（Single-page application）"></a>SPA（Single-page application）</h3><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li><p>可以在页面切换间平滑过渡，增加Loading动画，类似native app；</p>
+</li>
+<li><p>模块化开发；</p>
+</li>
+<li><p>可以选择性的保留状态；</p>
+</li>
+<li><p>避免了公共JS的反复执行，如无需在各个页面打开时都判断是否登录过等等；</p>
+</li>
+<li><p>减少了请求体积，节省流量，加快页面响应速度；</p>
+</li>
+</ol>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><p> 前期开发复杂度大大提升，工期过长，涉及方面过多，需要长期进行规划；</p>
+<h3 id="MVC："><a href="#MVC：" class="headerlink" title="MVC："></a>MVC：</h3><p>计划采用Backbone.js<br><img src="/images/backbone_logo.png" alt="backbone_logo"></p>
+<h3 id="资料："><a href="#资料：" class="headerlink" title="资料："></a>资料：</h3><p><a href="http://isux.tencent.com/h5-performance.html" target="_blank" rel="external">移动H5前端性能优化指南</a></p>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+	
+		
+	
+		
+			
+			
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2016/03/07/Web移动端开发常规全局设置/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2014/12/10/doT模板简介/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
 	</div>
   </div>
   <div class="container-narrow">
-	<footer> <%- partial('_partial/footer') %> </footer>
+	<footer> <p>
+  &copy; 2016 zhoutao
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
   </div> <!-- container-narrow -->
-  <%- partial('_partial/after_footer') %>
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
 </body>
 </html>
